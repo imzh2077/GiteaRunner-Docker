@@ -1,4 +1,4 @@
-name: AMD64 Image
+name: GHCR Releases
 
 on:
   workflow_dispatch:
