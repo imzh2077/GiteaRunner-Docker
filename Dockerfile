@@ -7,7 +7,8 @@ RUN apt-get update \
     ca-certificates unzip tar gzip bash make python3 python3-pip build-essential libc6-dev libgcc-s1 tini \
   && git lfs install \
   && rm -rf /var/lib/apt/lists/* \
-  && mkdir -p /data && chmod 755 /data
+  && mkdir -p /data && chmod 755 /data \
+  && echo "ubuntu ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers.d/nopasswd
 
   
 #Download GiteaRunner
