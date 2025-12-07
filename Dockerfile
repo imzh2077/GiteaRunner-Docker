@@ -1,5 +1,7 @@
 FROM ubuntu:noble
 
+
+# Install Ubuntu
 RUN apt-get update \
   && apt-get install -y curl dumb-init git git-lfs htop locales lsb-release man-db nano openssh-client procps sudo vim-tiny wget zsh \
     ca-certificates unzip tar gzip bash make python3 python3-pip build-essential libc6-dev libgcc-s1 tini \
@@ -7,11 +9,15 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/* \
   && mkdir -p /data && chmod 755 /data
 
+  
+#Download GiteaRunner
 ARG UPSTREAM_VERSION
 RUN ARCH="$(dpkg --print-architecture)" \
   && wget -O /usr/local/bin/act_runner https://dl.gitea.com/act_runner/${UPSTREAM_VERSION}/act_runner-${UPSTREAM_VERSION}-linux-$ARCH \
   && chmod +x /usr/local/bin/act_runner
 
+  
+#Write Docker Entrypoint
 RUN cat > /usr/local/bin/run.sh << 'EOF'
 #!/usr/bin/env bash
 if [[ ! -d /data ]]; then
@@ -69,5 +75,6 @@ unset GITEA_RUNNER_REGISTRATION_TOKEN_FILE
 exec act_runner daemon ${CONFIG_ARG} ${RUN_ARGS}
 EOF
 RUN chmod +x /usr/local/bin/run.sh
+
 
 CMD ["/usr/bin/tini", "--", "/usr/local/bin/run.sh"]
