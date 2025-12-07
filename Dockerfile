@@ -7,8 +7,10 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/* \
   && mkdir -p /data && chmod 755 /data
 
+ARG UPSTREAM_VERSION
 COPY run.sh /usr/local/bin/run.sh
-RUN wget -O /usr/local/bin/act_runner https://dl.gitea.com/act_runner/0.2.13/act_runner-0.2.13-linux-arm64 \
+RUN ARCH="$(dpkg --print-architecture)" \
+  && wget -O /usr/local/bin/act_runner https://dl.gitea.com/act_runner/${UPSTREAM_VERSION}/act_runner-${UPSTREAM_VERSION}-linux-$ARCH \
   && chmod +x /usr/local/bin/act_runner \
   && chmod +x /usr/local/bin/run.sh
 
